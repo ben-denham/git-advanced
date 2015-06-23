@@ -21,6 +21,12 @@
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/solarized_light.css">
 
+		<style type="text/css">
+			.align-top-images img {
+				vertical-align: top;
+			}
+		</style>
+
 		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
 		<script>
 			if( window.location.search.match( /print-pdf/gi ) ) {
@@ -64,16 +70,29 @@
 				</section>
 
 				<section>
+					<h2>Administrivia</h2>
+					<ul>
+						<li>Bathrooms</li>
+						<li>Fire exits</li>
+					</ul>
+				</section>
+
+				<section>
 					<h2>Special thanks to</h2>
 					<ul>
 						<li>Mike O' – For approving this course</li>
 						<li>Alison Aldred – Organise all the things</li>
 						<li>Evan Giles – Inspiration and advice</li>
 						<li>Robert Higgins – Standardisation and profesionalism</li>
+						<li>Matthew Gray - Original author of this course</li>
 					</ul>
 				</section>
 
-				<section data-background-image="images/swag.gif"></section>
+				<section data-background-image="images/swag.gif">
+					<aside class="notes">
+						How you should feel with Git after this course.
+					</aside>
+				</section>
 
 				<!-- Course Overview -->
 				<section data-markdown>
@@ -84,7 +103,6 @@
 					* Part 3: Team workflows
 					* Part 4: Releases and Client workflows
 				</section>
-
 				<!-- Setup your git fu, review some basic stuff -->
 				<section>
 					<section data-markdown>
@@ -131,7 +149,7 @@
 						sudo apt-get install gitg
 						            OR
 						sudo apt-get install gitk
-                        
+
 						```
 
 					</section>
@@ -166,11 +184,16 @@
 							git config --global color.ui always
 							git config --global push.default current
 							git config --global log.decorate full
-							git config --global branch.rebase true
 							git config --global branch.autosetuprebase always
 							```
 
 							All these settings are stored in **~/.gitconfig**
+
+							* Run this in existing repositories where you want git pull to rebase:
+
+							```bash
+							git config branch.rebase true
+							```
 						</script>
 					</section>
 					<section>
@@ -236,7 +259,7 @@
 
 							Keep your achievements after the course, save this file
 							```bash
-							~/.git-achievements.log
+							~/.git-achievements-action.log
 							```
 						</script>
 					</section>
@@ -313,9 +336,15 @@
 
 					<section>
 						<img src="images/individual-workflow.svg" height="500px">
+						<aside class="notes">
+							<ul>
+								<li>Isolate: Figure out where the problem is.</li>
+								<li>Triage: Figuring out urgency/priority of task (Dev work or hotfix?).</li>
+							</ul>
+						</aside>
 					</section>
 
-					<section data-markdown>
+					<section data-markdown data-separator-notes="^Note:">
 						### Context hunting / Isolate, Triage
 						This is a BEFORE YOU START thing, helps isolate and triage
 
@@ -326,6 +355,14 @@
 						* Find out if code is still under warranty
 						* Get help if you get stuck, seek out a human
 						----------------------------------------
+
+						Note:
+						Before you start editing code, use Git to understand context:
+
+						- Who wrote this?
+						- What were they doing?
+						- What will my change effect?
+						- When did this issue start to occur?
 					</section>
 
 					<section data-markdown>
@@ -372,6 +409,45 @@
 						git log --grep 'bug#1234'
 						```
 						![grep for messages](images/git-log-grep-term.png)
+					</section>
+
+					<section data-markdown>
+						View the tree of commits:
+						```bash
+						git log --graph
+						```
+						![git log tree](images/git-log-graph.png)
+					</section>
+
+					<section data-markdown>
+						You can get pretty fancy with git log:
+						```bash
+						git config --global alias.treelog "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+						git treelog
+						```
+
+						![git log tree](images/git-pretty-log.png)
+
+						(Or just use gitk or tig)
+					</section>
+
+					<section data-markdown>
+						Filter the log:
+
+						```bash
+						# Show commits affecting index.html
+						git log index.html
+						# Show commits affecting index.html (Including those made when it wasn't named index.html)
+						git log --follow index.html
+						# Show commits from a specific user
+						git log --author ben-denham
+						# Show commits in a certain date range
+						git log --before 03-15-2014 --after 03-08-2014
+						# Show commits in the experiment branch that aren't in master
+						git log master..experiment
+						# Show commits in experiment and master that are not in both.
+						git log master...experiment
+						```
 					</section>
 
 					<!-- Git bisect -->
@@ -460,7 +536,7 @@
 
 						```bash
 						git blame -w $filename # ignore whitespace
-						git blame -m $filename # copy paste within the same file
+						git blame -M $filename # copy paste within the same file
 						git blame -C $filename # copy paste over the repo
 						```
 					</section>
@@ -537,7 +613,7 @@
 							2. Use git log to find fixes to issue #14756
 							3. Use pickaxe to find commits that added or removed 'parseFloat'
 							4. Try git blame on the .gitignore file
-							5. With this info, show the commit that blacklisted bower_components
+							5. With this info, show the commit that blacklisted node_modules
 
 							```bash
 							git clone https://github.com/jquery/jquery
@@ -546,6 +622,13 @@
 							git blame $file
 							git show $hash
 							```
+
+							Note:
+
+							- Test this the day before the course
+							- git log about issue (use a recent issue number)
+							- Pickaxe to find commits.
+							- Git blame and then git show to look at a commit.
 						</div>
 					</section>
 
@@ -578,6 +661,9 @@
 						![Git commits](
 							images/branches-commits.png
 						)
+
+						Note:
+						It's really easy to see what the project looked like at a particular commit.
 					</section>
 
 					<section data-markdown>
@@ -637,6 +723,78 @@
 						* **Reflog**: Save my ass! What have I had 'checked out' recently?
 						----------------------------------------
 						Whiteboard time!
+					</section>
+
+					<section>
+                                            <p>What will reset/checkout affect?</p>
+					    <table>
+                                                <thead><tr>
+                                                    <th width="42%"></th>
+                                                    <th>HEAD</th>
+                                                    <th>Index</th>
+                                                    <th>Workdir</th>
+                                                    <th>WD Safe?</th>
+                                                </tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><p><strong>Commit Level</strong></p></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><p><code>reset --soft [commit]</code></p></td>
+                                                        <td><p>REF</p></td>
+                                                        <td><p>NO</p></td>
+                                                        <td><p>NO</p></td>
+                                                        <td><p>YES</p></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><p><code>reset [commit]</code></p></td>
+                                                        <td><p>REF</p></td>
+                                                        <td><p>YES</p></td>
+                                                        <td><p>NO</p></td>
+                                                        <td><p>YES</p></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><p><code>reset --hard [commit]</code></p></td>
+                                                        <td><p>REF</p></td>
+                                                        <td><p>YES</p></td>
+                                                        <td><p>YES</p></td>
+                                                        <td><p><strong>NO</strong></p></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><p><code>checkout [commit]</code></p></td>
+                                                        <td><p>HEAD</p></td>
+                                                        <td><p>YES</p></td>
+                                                        <td><p>YES</p></td>
+                                                        <td><p>YES</p></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><p><strong>File Level</strong></p></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><p><code>reset (commit) [file]</code></p></td>
+                                                        <td><p>NO</p></td>
+                                                        <td><p>YES</p></td>
+                                                        <td><p>NO</p></td>
+                                                        <td><p>YES</p></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><p><code>checkout (commit) [file]</code></p></td>
+                                                        <td><p>NO</p></td>
+                                                        <td><p>YES</p></td>
+                                                        <td><p>YES</p></td>
+                                                        <td><p><strong>NO</strong></p></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <p>Git Book - Chapter 7.7</p>
 					</section>
 
 					<section data-markdown data-background-image="images/oops.gif">
@@ -719,7 +877,7 @@
 							Audit your work interactively with your staging area
 
 							1. When you're ready to commit locally
-							2. When you want to break up a monstor commit
+							2. When you want to break up a monster commit
 
 							----------------------------------------
 							### Quick activity
@@ -737,6 +895,8 @@
 							```bash
 							git reset HEAD
 							```
+
+							(``-p`` also works with reset and checkout)
 						</div>
 					</section>
 
@@ -770,7 +930,6 @@
 							2. $ref is the thing you're in conflict with
 
 							```bash
-							git reflog
 							git merge $ref
 							```
 						</div>
@@ -841,8 +1000,11 @@
 							Enter custom alias! You just need to run this once...
 
 							```bash
+							# Set up a global "git serve" alias.
 							git config --global alias.serve "daemon --verbose --export-all
 									--base-path=.git --reuseaddr --strict-paths .git/"
+							# Allow your repository to be shared.
+							touch .git/git-daemon-export-ok
 							```
 
 							Now you too can share your terrible poetry with your neighbour!
@@ -858,6 +1020,10 @@
 						<section data-markdown>
 							### Pull work from your neighbour
 							```bash
+							# Make some changes and commit.
+							echo 'My name' >> jabberwocky.html
+							git commit -am "Added my name".
+
 							# Find your IP address (or hostname)
 							ip ad
 
@@ -904,13 +1070,19 @@
 					<section>
 						<img src="images/under-attack.gif" height="500px">
 						<p>Wrestling with git</p>
+						<aside class="notes">
+							Don't force Git in people's faces.
+						</aside>
 					</section>
 					<section>
 						<div data-markdown>
 							### Clean history, rebase verses merge
 							* When to merge: If you've pushed it, you can't change things without pain.
 							* If you have multiple conflicts, try for a merge
+							* Don't rebase long chains of commits
+								* you'll have to repeat merge conflict resolution, unless you use rerere
 							* Use KISS where possible
+							* Avoid squashing lots of commits, so that you keep the history.
 
 							----------------------------------------
 							Discuss:
@@ -925,6 +1097,11 @@
 							git rebase --abort
 							git merge --abort
 							```
+
+							Note:
+
+							- rerere = reuse recorded resolution
+							- git config rerere.enabled true
 						</div>
 					</section>
 
@@ -953,21 +1130,6 @@
 
 					<section>
 						<div data-markdown>
-							### Database patching on branches
-							Git doesn't care about non-filesystem entities
-
-							Database patching is important to get right
-
-							----------------------------------------
-
-							You can either use convention, or process to manage this
-
-							1. Numeric patch - set 1+$current in your filename
-							2. Automatic numeric patch - use a merge script on release
-						</div>
-					</section>
-					<section>
-						<div data-markdown>
 							### Strategies for dealing with client requirements
 							The battle of flexibility vs simplicity
 
@@ -990,7 +1152,9 @@
 							### Client requirements: Linear history
 							* Simple
 							* Track changes, find bugs and release when you can
+							* Tag releases; create topic branches when necessary
 							* Easy to bring new devs on board
+							* You only work on one release at a time
 
 							![](images/basic-branching-1.png)
 							![](images/basic-branching-2.png)
@@ -999,9 +1163,11 @@
 					<section>
 						<div data-markdown>
 							### Client requirements: Merge forward releases
-							* Fairly simple
+							* Fairly simple; have a different branch for each release
+								* Merge older release branches into newer branches whenever they change
+								* Assumes each release depends on the previous release
 							* Work on multiple releases at the same time
-							* Can work on upstream while downstream is still going
+							* You can release fixes for v1 while working on features for v2
 
 							![](images/release-branches.png)
 						</div>
@@ -1009,32 +1175,57 @@
 					<section>
 						<div data-markdown>
 							### Client requirements: Feature releases
-							* Every piece of work is a feature
+							* Every piece of work is a feature (with its own 'feature branch')
 							* Features are octo-merged into a release candidate
-							* Need to track production somehow
-							* Cannot release 'backwards'
+							* Features can be excluded from a particular release
+							* Need to track production somehow (tag or a branch)
+							* Difficult to rollback a release (especially database patches).
+								- Instead, create new feature branches to resolve issues.
 
 							![](images/feature-releases-1.png)
+
+							Note:
+
+							- Image: Creation of a release candidate.
+							- If an octomerge has conflicts:
+								- Find the 2+ problematic branches (can be tricky)
+								- Merge them together into a NEW feature branch, which can then be used in the octomerge
+								- Reason: have no conflict resolution in the release candidate, so that the merge is reproducible.
+							- QA the release candidate, and make fixes on the feature branches.
+								- Release candidate gets promoted to prod (stable).
+								- Stable gets merged back into the feature branches.
+
 						</div>
 					</section>
 					<section>
 						<div data-markdown>
 							### Feature releases... omg
 							![](images/feature-releases-2.png)
+
+							Note:
+							- Creating a feature branch (wr210708) and working on it.
+							- Note the merging of stable back into the feature branch.
 						</div>
 					</section>
 					<section>
 						<div data-markdown>
 							### Feature releases... more woah
 							![](images/feature-releases-3.png)
+
+							Note:
+
+							- View of history with multiple releases (nightwatch and nimblefoot)
+							- nimblefoot gets merged together with a whole bunch of other feature branches to create nightwatch.
 						</div>
 					</section>
-					<section>
+					<section class="align-top-images">
 						<div data-markdown>
 							### Client requirements: Microkernel architecture
 							* Difficulty is abstracted to the application
+							* Modelled off the Linux kernel: many modules connect to a small core via APIs
+							* Usually separate repos for each module
 							* Modules of application can be worked on at the same time
-							* Release would package together multiple pieces of work
+							* A release would package together modules at different versions
 
 							![](images/basic-branching-2.png)
 							![](images/release-branches.png)
@@ -1042,6 +1233,25 @@
 					</section>
 					<section data-background-image="images/choose.gif">
 						<h1 style="color:white">Each has its costs! Choose the one that works best</h1>
+					</section>
+					<section>
+						<div data-markdown>
+							### Database migrations
+							Git doesn't care about non-filesystem entities
+
+							Database migrations (patches) are important to get right
+
+							----------------------------------------
+
+							- Have a numbering/naming convention for migrations.
+							- Create migrations with UP and DOWN instructions.
+								* Makes it easier to upgrade/downgrade the database working when switching between commits.
+							- Use git bisect with a script to drop the database, re-apply your migrations, and run a test (or prompt you for input):
+
+							```bash
+							git bisect run my_script.py
+							```
+						</div>
 					</section>
 				</section>
 
@@ -1057,7 +1267,7 @@
 							<a href="http://www.youtube.com/watch?v=1ffBJ4sVUb4">Git for ages 4 and up</a>
 						</li>
 						<li>
-							man git-workflows
+							man gitworkflows
 						</li>
 					</ul>
           <hr>
@@ -1073,8 +1283,12 @@
 					## Course Information
 					Slides can be found on
 
+					[github.com/ben-denham/git-advanced](
+						https://github.com/ben-denham/git-advanced
+					)
+
 					[github.com/catalyst-training/git-advanced](
-						https://github.com/catalyst-training/git-advanced
+						https://github.com/ben-denham/git-advanced
 					)
 
 					![qr for quick access](images/github-qr-link.png)
