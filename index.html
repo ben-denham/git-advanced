@@ -88,12 +88,6 @@
 					</ul>
 				</section>
 
-				<section data-background-image="images/swag.gif">
-					<aside class="notes">
-						How you should feel with Git after this course.
-					</aside>
-				</section>
-
 				<!-- Course Overview -->
 				<section data-markdown>
 					## Course Overview
@@ -103,6 +97,13 @@
 					* Part 3: Team workflows
 					* Part 4: Releases and Client workflows
 				</section>
+
+				<section data-background-image="images/swag.gif">
+					<aside class="notes">
+						How you should feel with Git after this course.
+					</aside>
+				</section>
+
 				<!-- Setup your git fu, review some basic stuff -->
 				<section>
 					<section data-markdown>
@@ -112,13 +113,18 @@
 						* Part 4: Releases and Client workflows
 						--------------------------------------------------------------------------------
 						### Objectives
+						<!--
 						- Install some stuff
+						-->
 						- Basic config for these machines
 						- Good config defaults
 						- Quick review of basic git
+						<!--
 						- Unlocking achievements, making git a bit more fun
+						-->
 					</section>
 
+<!--
 					<section data-markdown>
 						### Install some stuff
 
@@ -153,7 +159,7 @@
 						```
 
 					</section>
-
+-->
 					<section data-markdown>
 						### Basic config for these machines
 
@@ -205,7 +211,7 @@
 						</p>
 						<div><img src="images/qr-cheatsheet.png" style="border:0"></div>
 					</section>
-
+<!--
 					<section data-markdown>
 						<script type="text/template">
 							### Unlocking achievements, making git a bit more fun
@@ -295,16 +301,20 @@
 						<p>Commit without a parent.</p>
 						<hr>
 					</section>
-
+-->
 					<section data-markdown>
 						### Part 1: Getting started
 						### [COMPLETE]
 						* Objectives
+							<!--
 							- Install some stuff &#10004;
+							-->
 							- Basic config for these machines &#10004;
 							- Good config defaults &#10004;
 							- Quick review of basic git &#10004;
+							<!--
 							- Unlocking achievements, making git a bit more fun &#10004;
+							-->
 					</section>
 
 					<section data-background-image="images/dazzle.gif"></section>
@@ -339,7 +349,7 @@
 						<aside class="notes">
 							<ul>
 								<li>Isolate: Figure out where the problem is.</li>
-								<li>Triage: Figuring out urgency/priority of task (Dev work or hotfix?).</li>
+								<li>Triage: Figuring out urgency/priority of task (Is it dev work or a hotfix?).</li>
 							</ul>
 						</aside>
 					</section>
@@ -583,11 +593,15 @@
 						4. find the commit that broke the page
 
 						```bash
+						# Fetch repository and tags
 						git clone https://github.com/catalyst-training/jabberwocky
 						cd jabberwocky
 						git fetch --tags
-						git log -p
+						# Test code
+						firefox jabberwocky.html
 						git log --stat
+
+						# Start bisect
 						git bisect start $bad $good
 
 						# Now test the code!
@@ -617,8 +631,9 @@
 
 							```bash
 							git clone https://github.com/jquery/jquery
+							cd jquery
 							git log --grep 'asdf'
-							git log -S 'asdf'
+							git log -pS 'asdf'
 							git blame $file
 							git show $hash
 							```
@@ -694,7 +709,7 @@
 						* Commits are immutable, but you can re-create a new history
 
 						----------------------------------------
-						You can describe nodes with a...
+						You can refer to commits with a...
 
 						* **branch**			- a name to track your work
 						* **tag**					- a label, it doesn't move
@@ -712,14 +727,16 @@
 						Interesting commands with branches
 						```bash
 						git checkout $branch
-						git reset $ref
+						git merge $branch
 						git rebase $branch
 						git rebase --interactive $branch
+						git reset $ref
 						```
 						----------------------------------------
 						* **Checkout**: context dependent command...
 							1. Either reset unstaged file(s)
 							2. Or switch branches
+						* **Merge**: Create a new commit with multiple parent commits
 						* **Rebase**: Batch move commits and rewrite history
 						* **Reset**: Move branches around arbitarily
 						* **Reflog**: Save my ass! What have I had 'checked out' recently?
@@ -883,7 +900,7 @@
 
 							----------------------------------------
 							### Quick activity
-							Add your own verse to the jabberwocky poem, then run
+							Add new first and last verses to the jabberwocky poem, then run
 							```bash
 							git add -p
 							```
@@ -1309,12 +1326,6 @@
 					[github.com/ben-denham/git-advanced](
 						https://github.com/ben-denham/git-advanced
 					)
-
-					[github.com/catalyst-training/git-advanced](
-						https://github.com/ben-denham/git-advanced
-					)
-
-					![qr for quick access](images/github-qr-link.png)
 
 					Feedback? Corrections? Questions?
 
