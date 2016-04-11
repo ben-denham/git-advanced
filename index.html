@@ -25,6 +25,13 @@
 			.align-top-images img {
 				vertical-align: top;
 			}
+			.workflow-images img {
+				float: right;
+				max-height: 450px;
+			}
+			.workflow-images ul {
+				display: block;
+			}
 		</style>
 
 		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
@@ -1178,7 +1185,9 @@
 							A typical client may ask you to be flexible on the following
 
 							* Track changes, find bugs and release when you can
-							* Working on releases in parallel
+							* Working on features and releases in parallel
+							* Have feature freezes before releases
+							* Track which version is running in each environment.
 							* Construct release candidates based on feature sets
 							* Release partial applications (modular)
 						</div>
@@ -1187,29 +1196,63 @@
 						<h3 style="color:white">Release all the things!</h3>
 					</section>
 
-					<section>
+					<section class="workflow-images">
 						<div data-markdown>
 							### Client requirements: Linear history
-							* Simple
-							* Track changes, find bugs and release when you can
-							* Tag releases; create topic branches when necessary
-							* Easy to bring new devs on board
-							* You only work on one release at a time
 
-							![](images/basic-branching-1.png)
-							![](images/basic-branching-2.png)
+							![](images/workflow-1.png)
+
+							* Simple, single-branch
+							* Track changes, find bugs and release when you can
+							* Tag releases
+							* Doesn't scale well for many devs (frequent merging)
+							* You only work on one feature/release at a time
 						</div>
 					</section>
-					<section>
+					<section class="workflow-images">
+						<div data-markdown>
+							### Client requirements: Parallel features
+
+							![](images/workflow-2.png)
+
+							* Each feature/issue is worked on in a separate branch.
+							* Many devs can work independently, then merge later.
+							* A single developer can work on multiple issues at once.
+						</div>
+					</section>
+					<section class="workflow-images">
 						<div data-markdown>
 							### Client requirements: Merge forward releases
-							* Fairly simple; have a different branch for each release
-								* Merge older release branches into newer branches whenever they change
-								* Assumes each release depends on the previous release
-							* Work on multiple releases at the same time
-							* You can release fixes for v1 while working on features for v2
 
-							![](images/release-branches.png)
+							![](images/workflow-3.png)
+
+							* Fairly simple; each release has its own branch
+								* Merge older release branches into newer branches when they change
+								* Assumes each release depends on the previous one
+							* Work on multiple releases at the same time
+							* Release fixes for v1 while working towards v2
+						</div>
+					</section>
+					<section class="workflow-images">
+						<div data-markdown>
+							### Client requirements: Feature freezes and env-tracking
+
+							![](images/workflow-4.png)
+
+							* Release branches can be used to enable a feature freeze.
+							* Feature work continues on master, while only bug-fixes are made on v2.
+							* Bug-fixes are merged back into master from v2.
+							* You may also like to have a branch to track each environment.
+						</div>
+					</section>
+					<section class="workflow-images">
+						<div data-markdown>
+							### Gitflow
+
+							![](images/gitflow.png)
+
+							* Explanation: http://nvie.com/posts/a-successful-git-branching-model/
+							* Command-line tool: https://github.com/nvie/gitflow
 						</div>
 					</section>
 					<section>
@@ -1218,9 +1261,11 @@
 							* Every piece of work is a feature (with its own 'feature branch')
 							* Features are octo-merged into a release candidate
 							* Features can be excluded from a particular release
+<!--
 							* Need to track production somehow (tag or a branch)
 							* Difficult to rollback a release (especially database patches).
 								- Instead, create new feature branches to resolve issues.
+-->
 
 							![](images/feature-releases-1.png)
 
@@ -1237,6 +1282,7 @@
 
 						</div>
 					</section>
+<!--
 					<section>
 						<div data-markdown>
 							### Feature releases... omg
@@ -1258,17 +1304,19 @@
 							- nimblefoot gets merged together with a whole bunch of other feature branches to create nightwatch.
 						</div>
 					</section>
+-->
 					<section class="align-top-images">
 						<div data-markdown>
 							### Client requirements: Microkernel architecture
-							* Difficulty is abstracted to the application
-							* Modelled off the Linux kernel: many modules connect to a small core via APIs
-							* Usually separate repos for each module
-							* Modules of application can be worked on at the same time
-							* A release would package together modules at different versions
-
+							* Difficulty is abstracted to the application.
+							* Modelled off the Linux kernel: many modules connect to a small core via APIs.
+							* Usually separate repos for each module (sometimes combined using git submodules).
+							* Modules of application can be worked on at the same time with different workflows.
+							* A release would package together modules at different versions.
+<!--
 							![](images/basic-branching-2.png)
 							![](images/release-branches.png)
+-->
 						</div>
 					</section>
 					<section data-background-image="images/choose.gif">
