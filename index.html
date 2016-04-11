@@ -589,7 +589,6 @@
 					<section data-markdown>
 						### Activity: Testing bisect
 						1. Clone the jabberwocky repo, pull tags
-						2. Checkout the changes made with git log
 						3. Use bisect with __v1__ and __v2__ tags as good/bad commits
 						4. find the commit that broke the page
 
@@ -874,9 +873,8 @@
 						git log -p
 						```
 
-						...it's as if the error was never there.
+						...it's as if the error was never there. Now put it back
 
-						Now put it back
 						```bash
 						git reset origin/master --hard
 						```
@@ -901,18 +899,13 @@
 
 							----------------------------------------
 							### Quick activity
-							Add new first and last verses to the jabberwocky poem, then run
+
 							```bash
+							# Add new first and last verses to the jabberwocky poem, then run
 							git add -p
-							```
-
-							Check what's happened with
-							```bash
+							# Check what's happened with
 							git status
-							```
-
-							Put stuff back with
-							```bash
+							# Put stuff back with
 							git reset HEAD
 							```
 
@@ -1122,7 +1115,6 @@
 							* If you have multiple conflicts, try for a merge
 							* Don't rebase long chains of commits
 								* you'll have to repeat merge conflict resolution, unless you use rerere
-							* Use KISS where possible
 							* Avoid squashing lots of commits, so that you keep the history.
 
 							----------------------------------------
