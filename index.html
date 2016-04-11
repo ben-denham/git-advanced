@@ -197,16 +197,10 @@
 							git config --global color.ui always
 							git config --global push.default current
 							git config --global log.decorate full
-							git config --global branch.autosetuprebase always
+							git config --global pull.rebase true
 							```
 
 							All these settings are stored in **~/.gitconfig**
-
-							* Run this in existing repositories where you want git pull to rebase:
-
-							```bash
-							git config branch.rebase true
-							```
 						</script>
 					</section>
 					<section>
@@ -1137,7 +1131,7 @@
 							git pull --rebase
 							```
 							```bash
-							git config --global branch.autosetuprebase always
+							git config --global pull.rebase true
 							git pull
 							```
 							```bash
